@@ -17,7 +17,7 @@ class MainWindow:
         self.dataSet = DataSet(path)
         # TODO user should be able to select the sequence
         firstSequence = self.dataSet.sequences()[0]
-        print("Sequence:",firstSequence)
+        print("Sequence:", firstSequence)
         self.currSeq = self.dataSet[firstSequence]
 
         self.plot = VispyPlot(self.ui, self.currSeq)

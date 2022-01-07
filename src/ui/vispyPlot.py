@@ -7,8 +7,7 @@ import numpy as np
 class VispyPlot:
     def __init__(self, ui, data):
         self.ui = ui
-        self.data = data
-        self.pointCloud = self.data.load_lidar().lidar
+        self.data = data.load()
         self.setupVispyWidget()
         self.addSceneVisuals()
 
@@ -20,13 +19,16 @@ class VispyPlot:
 
         bgColor = (235 / 255, 235 / 255, 235 / 255)
 
-        self.canvas = scene.SceneCanvas(
-            keys='interactive', size=(600, 600), show=True, bgcolor=bgColor, vsync=False)
+        self.canvas = scene.SceneCanvas(keys='interactive', size=(
+            600, 600), show=True, bgcolor=bgColor, vsync=False)
         self.ui.pointCloudPage.layout().addWidget(self.canvas.native)
 
         self.view = self.canvas.central_widget.add_view()
 
         self.view.camera = 'turntable'  # or try 'arcball'
+
+        # add a colored 3D axis for orientation
+        self.axis = visuals.XYZAxis(parent=self.view.scene)
 
     def addSceneVisuals(self):
         # For the points
@@ -37,13 +39,11 @@ class VispyPlot:
 
         self.view.add(self.scatter)
 
-        # add a colored 3D axis for orientation
-        self.axis = visuals.XYZAxis(parent=self.view.scene)
-
     def renderPoints(self):
         slices = slice(None, None, 1)
-        positions = PointCloudRenderer.getFrameRenders(self.pointCloud, slices)
-        self.scatter.set_data(pos=positions, edge_color=None, face_color=(
-            0, 0, 0, 0.5), size=1, scaling=False)
+        pos, col = PointCloudRenderer.getFrameRenders(self.data, slices, [])
+        print(col)
+        self.scatter.set_data(pos=pos, edge_color=None,
+                              face_color=col, size=5, scaling=False)
 
-        print("Rendered", len(positions), "points")
+        print("Rendered", len(pos), "points")

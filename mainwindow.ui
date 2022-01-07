@@ -90,6 +90,9 @@ background-color: rgb(70, 71, 117);</string>
         <widget class="QStackedWidget" name="stackedWidget">
          <widget class="QWidget" name="pointCloudPage">
           <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="spacing">
+            <number>0</number>
+           </property>
            <property name="leftMargin">
             <number>0</number>
            </property>
