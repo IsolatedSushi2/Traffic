@@ -45,6 +45,7 @@ class Ui_MainWindow(object):
         self.pointCloudPage.setObjectName("pointCloudPage")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.pointCloudPage)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.stackedWidget.addWidget(self.pointCloudPage)
         self.page_2 = QtWidgets.QWidget()

@@ -10,51 +10,81 @@ import numpy as np
 class PointCloudRenderer(BaseRenderer):
 
     @staticmethod
-    def getFrameRenders(sequence, slices, colorCameraList):
+    def getFrameRenders(sequence, slices, cameraList):
         # Pointcloud is stored in the lidar
-        pointClouds = sequence.lidar
-        indices = np.arange(len(pointClouds[:]))[slices]
+        PCs = sequence.lidar[:]
+        selIndices = np.arange(len(PCs))[slices]
+
+        allCol = (0, 0, 0, 0.5)  # Default color
+
+        allPos = pd.concat([PCs[i] for i in selIndices])
+        allPos = allPos.to_numpy()[:, :3]  # Only interested in positions
+        allSizes = np.repeat(1, allPos.shape[0])
+
+        if len(cameraList) > 0:
+            allCol = PointCloudRenderer.getAllColors(
+                sequence, PCs, selIndices, cameraList)
+            summedCols = np.sum(allCol, axis=1)
+            print(summedCols)
+            mask = (summedCols < 3 - 0.01)
+            print("mask",mask)
+            allSizes[mask] = 5
+
+            print("sizes",allSizes)
 
 
-        pointClouds = pointClouds[slices]
+        
 
-        for index in range(len(pointClouds)):
-            frameIndex = indices[index]
-            currPointCloud = 
+        
 
 
-        positions = renderPC.to_numpy()[:, :3]  # Only interested in positions
-
-        rows, columns = positions.shape
-
-        colors = (0, 0, 0, 0.5)
-        if len(colorCameraList) == 0:
-            colors = np.zeros((rows, 3))
-            indicedColors, indices = PointCloudRenderer.getPCColours(sequence, positions, frameIndex)
-            colors[indices] = indicedColors
-        return positions, colors
+        return allPos, allCol, allSizes
 
     @staticmethod
-    def getPCColours(sequence, positions, frameIndex):
+    def getAllColors(sequence, allPCs, indices, cameraList):
+
+        allColors = np.empty((0, 3))
+
+        for frameIndex in indices:
+            currPC = allPCs[frameIndex]
+            currPos = currPC.to_numpy()[:, :3]
+            frameCameras = [sequence.camera[camName] for camName in cameraList]
+            colors = PointCloudRenderer.projectSelectedCameras(
+                currPos, frameCameras, frameIndex)
+            allColors = np.concatenate((allColors, colors), axis=0)
+
+        return allColors
+
+    @staticmethod
+    def projectSelectedCameras(currPC, cameraList, frameIndex):
+        rows, columns = currPC.shape
+
+        colors = np.ones((rows, 3))
+        for camera in cameraList:
+            indicedColors, indices = PointCloudRenderer.projectCamera(
+                currPC, camera, frameIndex)
+            colors[indices] = indicedColors
+
+        return colors
+
+    @staticmethod
+    def projectCamera(positions, currCam, frameIndex):
         renderInterval = int(1.0 / RENDER_POINTCLOUD_RATIO)
 
-        camera_name = "front_camera"
-        chosen_camera = sequence.camera[camera_name]
-        projected_points2d, camera_points_3d, inner_indices = geometry.projection(lidar_points=positions, 
-                                                                          camera_data=chosen_camera[frameIndex],
-                                                                          camera_pose=chosen_camera.poses[frameIndex],
-                                                                          camera_intrinsics=chosen_camera.intrinsics,
-                                                                          filter_outliers=True)
+        projected_points2d, camera_points_3d, inner_indices = geometry.projection(lidar_points=positions,
+                                                                                  camera_data=currCam[frameIndex],
+                                                                                  camera_pose=currCam.poses[frameIndex],
+                                                                                  camera_intrinsics=currCam.intrinsics,
+                                                                                  filter_outliers=True)
 
-
-        # TODO, could do rounding, but then 1919.5 becomes 1920, fix that 
+        # TODO, could do rounding, but then 1919.5 becomes 1920, fix that
         #pixelIndices = np.round(projected_points2d)
         pixelIndices = np.array(projected_points2d, dtype=np.uint16)
         # Maybe that _npx works?
         rowIndices = pixelIndices[:, 0]
         columnIndices = pixelIndices[:, 1]
 
-        currCameraFrame = chosen_camera.data[frameIndex]
+        currCameraFrame = currCam.data[frameIndex]
         currCameraPixelValues = np.array(currCameraFrame)
         colors = currCameraPixelValues[columnIndices, rowIndices]
 

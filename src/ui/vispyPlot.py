@@ -2,7 +2,7 @@ from vispy import scene
 from vispy.scene import visuals
 from src.renderers.pointCloudRenderer import PointCloudRenderer
 import numpy as np
-
+import time
 
 class VispyPlot:
     def __init__(self, ui, data):
@@ -20,7 +20,7 @@ class VispyPlot:
         bgColor = (235 / 255, 235 / 255, 235 / 255)
 
         self.canvas = scene.SceneCanvas(keys='interactive', size=(
-            600, 600), show=True, bgcolor=bgColor, vsync=False)
+            600, 600), show=True, bgcolor='black', vsync=False)
         self.ui.pointCloudPage.layout().addWidget(self.canvas.native)
 
         self.view = self.canvas.central_widget.add_view()
@@ -40,10 +40,14 @@ class VispyPlot:
         self.view.add(self.scatter)
 
     def renderPoints(self):
-        slices = slice(None, None, 1)
-        pos, col = PointCloudRenderer.getFrameRenders(self.data, slices, [])
+        slices = slice(None, None, 5)
+        t1 = time.time()
+        pos, col, sizes = PointCloudRenderer.getFrameRenders(self.data, slices, ["front_camera"])
+        print("Getting render tool",time.time() - t1, "seconds")
         print(col)
+        t2 =time.time()
+        
         self.scatter.set_data(pos=pos, edge_color=None,
-                              face_color=col, size=5, scaling=False)
+                              face_color=col, size=sizes, scaling=False)
 
-        print("Rendered", len(pos), "points")
+        print("Rendered", len(pos), "points in ",time.time() - t2, "seconds")
