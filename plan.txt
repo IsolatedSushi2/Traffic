@@ -1,0 +1,27 @@
+read in data:
+	- load everything
+
+pointclouds
+	- Per timestep, load in all the data
+	- keep them in separate arrays (store in list)
+	- Pointclouds have default color and size
+	
+	- We want the cameras to project on these clouds
+		- Do all the calculations before rendering anything since it takes multiple seconds
+			- Some parameters like sampling etc
+
+		So for each timestamp, we would need to store for each camera the indices and colors (and the size for colored points)
+		
+Probably a class per timestamp makes the most sense, containing the original pointcloud (np array), dict of indices with cameranames, and dict of colors with dict
+	- Use the indices to overwrite the colors and sizes (don't really care in the case of tiebreak by last)
+
+
+in the render function, concat the pointclouds etc, shouldnt take long because the rest was calculated earlier
+Use a seperate file which contains the code to handle this, static methods
+
+However, moving objects might look wierd, cool idea would be to use the cuboids to remove the points inside of them
+Preprocess this aswell, list of indices per frame (can use the previous class aswell) which are inside the cuboids, remove these
+
+
+
+
