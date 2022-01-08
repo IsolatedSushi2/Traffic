@@ -1,6 +1,6 @@
 from vispy import scene
 from vispy.scene import visuals
-from src.renderers.pointCloudRenderer import PointCloudRenderer
+import src.renderers.renderer as renderer
 import numpy as np
 import time
 
@@ -39,15 +39,15 @@ class VispyPlot:
 
         self.view.add(self.scatter)
 
-    def renderPoints(self):
-        slices = slice(None, None, 5)
-        t1 = time.time()
-        pos, col, sizes = PointCloudRenderer.getFrameRenders(self.data, slices, ["front_camera"])
-        print("Getting render tool",time.time() - t1, "seconds")
-        print(col)
-        t2 =time.time()
+    # def renderPoints(self):
+    #     slices = slice(None, None, 5)
+    #     t1 = time.time()
+    #     pos, col, sizes = PointCloudRenderer.getFrameRenders(self.data, slices, ["front_camera"])
+    #     print("Getting render tool",time.time() - t1, "seconds")
+    #     print(col)
+    #     t2 =time.time()
         
-        self.scatter.set_data(pos=pos, edge_color=None,
-                              face_color=col, size=sizes, scaling=False)
+    #     self.scatter.set_data(pos=pos, edge_color=None,
+    #                           face_color=col, size=sizes, scaling=False)
 
-        print("Rendered", len(pos), "points in ",time.time() - t2, "seconds")
+    #     print("Rendered", len(pos), "points in ",time.time() - t2, "seconds")

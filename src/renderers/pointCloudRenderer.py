@@ -9,6 +9,19 @@ import numpy as np
 
 class PointCloudRenderer(BaseRenderer):
 
+    
+
+
+
+
+
+
+
+
+
+
+
+
     @staticmethod
     def getFrameRenders(sequence, slices, cameraList):
         # Pointcloud is stored in the lidar
