@@ -4,13 +4,13 @@ import src.renderers.renderer as renderer
 import numpy as np
 import time
 from src.ui.customWidgets.cameraSelector import CameraSelector
-
+from src.ui.customWidgets.legendSelector import LegendSelector
 
 class VispyPlot:
-    def __init__(self, ui, camNames, renderDataList):
+    def __init__(self, ui, camNames, renderData):
 
         self.ui = ui
-        self.renderDataList = renderDataList
+        self.renderData = renderData
 
         self.setupVispyWidget()
         self.addSceneVisuals()
@@ -20,6 +20,7 @@ class VispyPlot:
         # camNames = ['front_camera']
 
         self.setupCameraSelectorButtons(camNames)
+        self.setupLegend()
         self.renderCarPath()
     # Create the 3d vispy widget
 
@@ -29,6 +30,11 @@ class VispyPlot:
 
         self.cameraSelector.newCamListSignal.connect(self.updatedCamList)
         self.cameraSelector.renderPathSignal.connect(self.updatedPathButton)
+
+    def setupLegend(self):
+        #classNames = self.seq
+        self.legend = LegendSelector(self.canvas.native)
+        self.legend.move(20, 220)
 
     def setupVispyWidget(self):
 
@@ -40,7 +46,7 @@ class VispyPlot:
 
         self.view = self.canvas.central_widget.add_view()
 
-        self.view.camera = scene.cameras.FlyCamera()  # or try 'arcball'
+        self.view.camera = 'turntable' #scene.cameras.FlyCamera()  # or try 'arcball'
 
         # add a colored 3D axis for orientation
         self.axis = visuals.XYZAxis(parent=self.view.scene)
@@ -52,7 +58,7 @@ class VispyPlot:
         self.carPosition = visuals.Line()
 
         # TODO
-        #self.scatter.set_gl_state('opaque', depth_test=False)
+        self.scatter.set_gl_state('opaque', depth_test=False)
         # self.scatter.set_data()
 
         self.view.add(self.carPath)
@@ -72,7 +78,7 @@ class VispyPlot:
             return
 
         index = self.ui.frameSlider.value()
-        currRenderData = self.renderDataList[index]
+        currRenderData = self.renderData.renderFrameList[index]
 
         pos, colors, size, carPos, carColor = renderer.renderCarPath(currRenderData)
         self.carPath.set_data(pos, color=colors, width=size)
@@ -83,9 +89,9 @@ class VispyPlot:
     def renderPoints(self):
 
         index = self.ui.frameSlider.value()
-        currRenderData = self.renderDataList[index]
+        currRenderData = self.renderData.renderFrameList[index]
         camNames = self.cameraSelector.selCamList
-        pos, colors, sizes = renderer.renderPC(currRenderData, camNames)
+        pos, colors, sizes = renderer.renderPC(currRenderData, camNames, True)
         self.scatter.set_data(pos=pos, edge_color=None,
                               face_color=colors, size=sizes, scaling=False)
 

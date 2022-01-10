@@ -1,9 +1,10 @@
 import src.extractors.pointCloudExtractor as PCE
 import src.extractors.positionExtractor as PE
+from src.constants import SEMSEG_COLORMAP
 
 
 #  Stores all the renders for a single frame (from all the sensors)
-class RenderData:
+class RenderFrame:
 
     def __init__(self, sequence, frameIndex):
         self.seq = sequence  # Load the data
@@ -13,3 +14,14 @@ class RenderData:
         self.carPositions = PE.getCarPositions(self.seq)
         self.cols, self.colIndices = PCE.getColorIndicesDict(
             self.PCpos, self.frameIndex, self.seq)
+
+        self.segmentVals = sequence.semseg[frameIndex].to_numpy().flatten() - 1
+        self.segmentColors = SEMSEG_COLORMAP[self.segmentVals]
+
+
+
+class RenderData:
+    def __init__(self, sequence, selectedRange):
+        self.renderFrameList = [RenderFrame(
+            sequence, ind) for ind in selectedRange]
+

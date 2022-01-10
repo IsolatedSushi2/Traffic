@@ -2,7 +2,7 @@ import numpy as np
 from colour import Color
 
 
-def renderPC(renderData, camNameList):
+def renderPC(renderData, camNameList, semseg):
     finalPos = renderData.PCpos
     pointAmount = finalPos.shape[0]
 
@@ -14,6 +14,10 @@ def renderPC(renderData, camNameList):
         colors = renderData.cols[camName]
         finalSizes[indices] = 4
         finalColors[indices] = colors
+
+    if semseg:
+        finalColors = renderData.segmentColors
+        finalSizes = 5
 
     return finalPos, finalColors, finalSizes
 

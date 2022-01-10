@@ -13,10 +13,10 @@ class MainWindow:
         self.currSeq = None
 
         self.useDefaultDataset()
-        self.renderDatas = []
+        self.renderData = None
 
     def setupSlider(self):
-        amount = len(self.renderDatas)
+        amount = len(self.renderData.renderFrameList)
         self.ui.frameSlider.setMaximum(amount - 1)
         self.ui.frameSlider.valueChanged.connect(self.render)
 
@@ -27,25 +27,25 @@ class MainWindow:
         self.dataSet = DataSet(path)
 
         # TODO user should be able to select the sequence
-        print(self.dataSet.sequences())
-        firstSequence = self.dataSet.sequences()[8]
-        self.currSeq = self.dataSet["012"]
+        print(self.dataSet.sequences(with_semseg=True))
+        firstSequence = self.dataSet.sequences(with_semseg=True)[0]
+        self.currSeq = self.dataSet[firstSequence]
 
-        self.generateRenderDatas(self.currSeq)
+        self.generateRenderData(self.currSeq)
 
         camNames = self.currSeq.camera.keys()
-        self.plot = VispyPlot(self.ui, camNames, self.renderDatas)
+        self.plot = VispyPlot(self.ui, camNames, self.renderData)
         self.setupSlider()
 
         self.render()
 
     # Get the renderData (for now, just do the first frame)
-    def generateRenderDatas(self, sequence):
+    def generateRenderData(self, sequence):
         sequence.load()
         frameAmount = len(sequence.timestamps.data)
 
-        self.renderDatas = [RenderData(sequence, ind)
-                            for ind in range(0, frameAmount, 5)]
+        self.renderData = RenderData(sequence, range(0, frameAmount, 5))
+        
         
     def render(self):
 
