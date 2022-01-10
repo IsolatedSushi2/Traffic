@@ -1,6 +1,7 @@
 from pandaset import geometry
 import numpy as np
 
+
 #  TODO, handle the sampling
 def getOriginalPC(sequence, frameIndex):
     PCdataFrame = sequence.lidar[frameIndex]
@@ -9,7 +10,7 @@ def getOriginalPC(sequence, frameIndex):
 
 
 def getColorIndicesDict(pos, frameIndex, seq):
-    
+
     colorDict = {}
     indiceDict = {}
 
@@ -21,8 +22,9 @@ def getColorIndicesDict(pos, frameIndex, seq):
 
         colorDict[camName] = currColors
         indiceDict[camName] = currIndices
-    
+
     return colorDict, indiceDict
+
 
 def projectCamera(positions, currCam, frameIndex):
     projected_points2d, _, inner_indices = geometry.projection(lidar_points=positions,

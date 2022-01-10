@@ -31,13 +31,6 @@ class Ui_Form(object):
 "QPushButton:pressed {    \n"
 "    background-color: rgb(85, 170, 255);\n"
 "}")
-        self.carImg = QtWidgets.QFrame(Form)
-        self.carImg.setGeometry(QtCore.QRect(25, 25, 70, 140))
-        self.carImg.setStyleSheet("background-image: url(:/newPrefix/icons/smallCar.png);\n"
-"background-color: transparent;")
-        self.carImg.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.carImg.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.carImg.setObjectName("carImg")
         self.left_camera = QtWidgets.QPushButton(Form)
         self.left_camera.setGeometry(QtCore.QRect(0, 90, 20, 70))
         self.left_camera.setText("")
@@ -63,6 +56,25 @@ class Ui_Form(object):
         self.back_camera.setGeometry(QtCore.QRect(25, 170, 70, 20))
         self.back_camera.setText("")
         self.back_camera.setObjectName("back_camera")
+        self.carPositionBtn = QtWidgets.QPushButton(Form)
+        self.carPositionBtn.setGeometry(QtCore.QRect(25, 25, 70, 140))
+        self.carPositionBtn.setStyleSheet("QPushButton{\n"
+"background-image: url(:/newPrefix/icons/smallCar.png);\n"
+"background-color: transparent;\n"
+"border-style: solid;\n"
+"border-color: rgba(0,0,0,50);\n"
+"border-width: 0px;\n"
+"border-radius: 10px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"}")
+        self.carPositionBtn.setText("")
+        self.carPositionBtn.setObjectName("carPositionBtn")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

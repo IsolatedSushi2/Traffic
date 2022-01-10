@@ -51,4 +51,4 @@ class MainWindow:
 
         if not self.currSeq:
             return
-        self.plot.renderPoints()
+        self.plot.update()

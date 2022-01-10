@@ -15,13 +15,12 @@ class VispyPlot:
         self.setupVispyWidget()
         self.addSceneVisuals()
 
-        self.selCamNames = []
-
         # camNames = ['back_camera', 'front_camera', 'front_left_camera',
         #             'front_right_camera', 'left_camera', 'right_camera']
         # camNames = ['front_camera']
 
         self.setupCameraSelectorButtons(camNames)
+        self.renderCarPath()
     # Create the 3d vispy widget
 
     def setupCameraSelectorButtons(self, camNames):
@@ -29,6 +28,7 @@ class VispyPlot:
         self.cameraSelector.move(20, 20)
 
         self.cameraSelector.newCamListSignal.connect(self.updatedCamList)
+        self.cameraSelector.renderPathSignal.connect(self.updatedPathButton)
 
     def setupVispyWidget(self):
 
@@ -40,7 +40,7 @@ class VispyPlot:
 
         self.view = self.canvas.central_widget.add_view()
 
-        self.view.camera = 'turntable'  # or try 'arcball'
+        self.view.camera = scene.cameras.FlyCamera()  # or try 'arcball'
 
         # add a colored 3D axis for orientation
         self.axis = visuals.XYZAxis(parent=self.view.scene)
@@ -48,25 +48,54 @@ class VispyPlot:
     def addSceneVisuals(self):
         # For the points
         self.scatter = visuals.Markers()
+        self.carPath = visuals.Line()
+        self.carPosition = visuals.Line()
 
+        # TODO
         #self.scatter.set_gl_state('opaque', depth_test=False)
         # self.scatter.set_data()
 
+        self.view.add(self.carPath)
         self.view.add(self.scatter)
+        self.view.add(self.carPosition)
 
-    def updatedCamList(self, newCamList):
-        print(newCamList)
+    def updatedPathButton(self):
+        self.renderCarPath()
 
-        self.selCamNames = newCamList
+    def updatedCamList(self):
         self.renderPoints()
+
+    def renderCarPath(self):
+        if not self.cameraSelector.renderPath:
+            self.carPath.set_data(np.empty((0, 3)), color=(0, 0, 0))
+            self.carPosition.set_data(np.empty((0, 3)), color=(0, 0, 0))
+            return
+
+        index = self.ui.frameSlider.value()
+        currRenderData = self.renderDataList[index]
+
+        pos, colors, size, carPos, carColor = renderer.renderCarPath(currRenderData)
+        self.carPath.set_data(pos, color=colors, width=size)
+        
+        self.carPosition.set_data(carPos, color=carColor, width=size)
+
 
     def renderPoints(self):
 
         index = self.ui.frameSlider.value()
         currRenderData = self.renderDataList[index]
-
-        pos, colors, sizes = renderer.renderPC(currRenderData, self.selCamNames)
+        camNames = self.cameraSelector.selCamList
+        pos, colors, sizes = renderer.renderPC(currRenderData, camNames)
         self.scatter.set_data(pos=pos, edge_color=None,
                               face_color=colors, size=sizes, scaling=False)
 
         print("Rendered", len(pos), "points")
+
+    def updateCamera(self):
+        return # TODO
+
+    def update(self):
+        self.renderPoints()
+        self.renderCarPath()
+        self.updateCamera()
+        

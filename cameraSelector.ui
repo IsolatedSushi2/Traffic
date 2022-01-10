@@ -34,26 +34,6 @@ QPushButton:pressed {
 	background-color: rgb(85, 170, 255);
 }</string>
   </property>
-  <widget class="QFrame" name="carImg">
-   <property name="geometry">
-    <rect>
-     <x>25</x>
-     <y>25</y>
-     <width>70</width>
-     <height>140</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-image: url(:/newPrefix/icons/smallCar.png);
-background-color: transparent;</string>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-  </widget>
   <widget class="QPushButton" name="left_camera">
    <property name="geometry">
     <rect>
@@ -130,6 +110,36 @@ background-color: transparent;</string>
      <width>70</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="carPositionBtn">
+   <property name="geometry">
+    <rect>
+     <x>25</x>
+     <y>25</y>
+     <width>70</width>
+     <height>140</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+background-image: url(:/newPrefix/icons/smallCar.png);
+background-color: transparent;
+border-style: solid;
+border-color: rgba(0,0,0,50);
+border-width: 0px;
+border-radius: 10px;
+}
+
+QPushButton:hover {
+	background-color: rgb(33, 37, 43);
+}
+QPushButton:pressed {	
+	background-color: rgb(85, 170, 255);
+}</string>
    </property>
    <property name="text">
     <string/>
