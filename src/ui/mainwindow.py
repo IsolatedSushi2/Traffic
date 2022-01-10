@@ -10,10 +10,15 @@ from src.renderers.renderData import RenderData
 class MainWindow:
     def __init__(self, ui):
         self.ui = ui
+        self.currSeq = None
 
         self.useDefaultDataset()
-        self.currSeq = None
         self.renderDatas = []
+
+    def setupSlider(self):
+        amount = len(self.renderDatas)
+        self.ui.frameSlider.setMaximum(amount - 1)
+        self.ui.frameSlider.valueChanged.connect(self.render)
 
     def useDefaultDataset(self):
         self.getDataset(DEFAULT_DATA_SEQUENCE)
@@ -22,13 +27,15 @@ class MainWindow:
         self.dataSet = DataSet(path)
 
         # TODO user should be able to select the sequence
-        firstSequence = self.dataSet.sequences()[0]
-        self.currSeq = self.dataSet[firstSequence]
+        print(self.dataSet.sequences())
+        firstSequence = self.dataSet.sequences()[8]
+        self.currSeq = self.dataSet["012"]
 
         self.generateRenderDatas(self.currSeq)
 
         camNames = self.currSeq.camera.keys()
         self.plot = VispyPlot(self.ui, camNames, self.renderDatas)
+        self.setupSlider()
 
         self.render()
 
@@ -36,14 +43,12 @@ class MainWindow:
     def generateRenderDatas(self, sequence):
         sequence.load()
         frameAmount = len(sequence.timestamps.data)
-        frameAmount = 1
 
         self.renderDatas = [RenderData(sequence, ind)
-                            for ind in range(0, frameAmount, 10)]
+                            for ind in range(0, frameAmount, 5)]
         
     def render(self):
 
         if not self.currSeq:
             return
-
         self.plot.renderPoints()

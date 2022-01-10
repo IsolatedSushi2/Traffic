@@ -41,8 +41,6 @@ class VispyPlot:
         self.view = self.canvas.central_widget.add_view()
 
         self.view.camera = 'turntable'  # or try 'arcball'
-        self.view.camera.scale_factor =1
-        self.view.camera.zoom_factor=  1
 
         # add a colored 3D axis for orientation
         self.axis = visuals.XYZAxis(parent=self.view.scene)
@@ -63,7 +61,11 @@ class VispyPlot:
         self.renderPoints()
 
     def renderPoints(self):
-        pos, colors, sizes = renderer.renderPCList(self.renderDataList, self.selCamNames)
+
+        index = self.ui.frameSlider.value()
+        currRenderData = self.renderDataList[index]
+
+        pos, colors, sizes = renderer.renderPC(currRenderData, self.selCamNames)
         self.scatter.set_data(pos=pos, edge_color=None,
                               face_color=colors, size=sizes, scaling=False)
 
