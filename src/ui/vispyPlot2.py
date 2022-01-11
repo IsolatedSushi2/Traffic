@@ -5,7 +5,6 @@ import numpy as np
 import time
 from src.ui.customWidgets.cameraSelector import CameraSelector
 from src.ui.customWidgets.legendSelector import LegendSelector
-from src.constants import RENDER_LIST
 
 class VispyPlot:
     def __init__(self, ui, camNames, renderData):
@@ -32,14 +31,15 @@ class VispyPlot:
         self.cameraSelector = CameraSelector(camNames, self.canvas.native)
         self.cameraSelector.move(25, 20)
 
-        self.cameraSelector.newCamListSignal.connect(self.updatedCamList)
+        self.cameraSelector.newCamListSignal.connect(self.forceUpdate)
         self.cameraSelector.renderPathSignal.connect(self.updatedPathButton)
 
     def setupLegend(self):
         self.legend = LegendSelector(self.renderData, self.canvas.native)
-        self.legend.clickedLabelSignal.connect(self.updatedLegend)
+        self.legend.clickedLabelSignal.connect(self.forceUpdate)
         self.legend.move(20, 280)
-        self.legend.ui.segmentingCheckBox.clicked.connect(self.onSegmentClicked)
+        self.legend.ui.segmentingCheckBox.clicked.connect(self.forceUpdate)
+        self.legend.ui.renderListCheckBox.clicked.connect(self.forceUpdate)
 
     def setupVispyWidget(self):
 
@@ -74,13 +74,7 @@ class VispyPlot:
     def updatedPathButton(self):
         self.renderCarPath()
 
-    def updatedCamList(self):
-        self.update(True)
-
-    def updatedLegend(self):
-        self.update(True)
-
-    def onSegmentClicked(self):
+    def forceUpdate(self):
         self.update(True)
 
     def renderCarPath(self):
@@ -107,8 +101,9 @@ class VispyPlot:
         camNames = self.cameraSelector.selCamList
         legendList = self.legend.selectedClasses
         useSegment = self.legend.ui.segmentingCheckBox.isChecked()
+        useList = self.legend.ui.renderListCheckBox.isChecked()
 
-        if RENDER_LIST:
+        if useList:
             pos, colors, sizes = renderer.renderPCList(renderList, camNames, useSegment, legendList)
         else:
             pos, colors, sizes = renderer.renderPC(renderList[index], camNames, useSegment, legendList)
@@ -123,8 +118,9 @@ class VispyPlot:
     def update(self, force=False):
 
         self.renderCarPath()
-
-        if self.rendered and RENDER_LIST and not force:
+        useList = self.legend.ui.renderListCheckBox.isChecked()
+       
+        if self.rendered and useList and not force:
             return
 
         self.renderPoints()

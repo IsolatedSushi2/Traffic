@@ -15,6 +15,4 @@ colorDict = dict.fromkeys(CLASS_NAMES, [0, 0, 0])
 
 SEMSEG_COLORMAP = getDefaultColors(colorDict)
 
-RENDER_LIST = False
-
 CHOSEN_SEQUENCE = "032"

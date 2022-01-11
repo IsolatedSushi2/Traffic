@@ -13,13 +13,25 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(170, 400)
+        Form.resize(180, 497)
         Form.setStyleSheet("QWidget{\n"
 "background-color:transparent;\n"
 "}\n"
 "QListWidget{\n"
 "background-color:transparent;\n"
 "}\n"
+"\n"
+"\n"
+"QListWidget::item:selected{\n"
+"background-color:transparent;\n"
+"}\n"
+"QListWidget::item:hover{\n"
+"background-color:transparent;\n"
+"}\n"
+"QListWidget::item{\n"
+"    border:none;\n"
+"}\n"
+"\n"
 "/* SCROLL BARS */\n"
 "QScrollBar:horizontal {\n"
 "    border: none;\n"
@@ -122,8 +134,31 @@ class Ui_Form(object):
 "")
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setSpacing(5)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.frame_2 = QtWidgets.QFrame(Form)
+        self.frame_2.setMinimumSize(QtCore.QSize(0, 30))
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame_2)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setSpacing(0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.renderListCheckBox = QtWidgets.QCheckBox(self.frame_2)
+        self.renderListCheckBox.setMinimumSize(QtCore.QSize(0, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setWeight(75)
+        self.renderListCheckBox.setFont(font)
+        self.renderListCheckBox.setStyleSheet("color:rgba(255,255,255,150);")
+        self.renderListCheckBox.setChecked(True)
+        self.renderListCheckBox.setObjectName("renderListCheckBox")
+        self.horizontalLayout_2.addWidget(self.renderListCheckBox)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem)
+        self.verticalLayout.addWidget(self.frame_2)
         self.frame = QtWidgets.QFrame(Form)
         self.frame.setMinimumSize(QtCore.QSize(0, 30))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -133,8 +168,6 @@ class Ui_Form(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem)
         self.segmentingCheckBox = QtWidgets.QCheckBox(self.frame)
         self.segmentingCheckBox.setMinimumSize(QtCore.QSize(0, 30))
         font = QtGui.QFont()
@@ -151,6 +184,7 @@ class Ui_Form(object):
         self.horizontalLayout.addItem(spacerItem1)
         self.verticalLayout.addWidget(self.frame)
         self.listWidget = QtWidgets.QListWidget(Form)
+        self.listWidget.setFocusPolicy(QtCore.Qt.NoFocus)
         self.listWidget.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.listWidget.setStyleSheet("")
         self.listWidget.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -168,6 +202,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
+        self.renderListCheckBox.setText(_translate("Form", "Render All Frames"))
         self.segmentingCheckBox.setText(_translate("Form", "Segmenting"))
 import qtresources_rc
 
