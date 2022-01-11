@@ -19,6 +19,7 @@ class RenderFrame:
         self.segmentColors = SEMSEG_COLORMAP[self.segmentVals]
 
 
+#  Stores all the renderframes, helps with pre-processing
 class RenderData:
     def __init__(self, sequence, selectedRange):
         self.renderFrameList = [RenderFrame(

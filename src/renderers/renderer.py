@@ -2,39 +2,43 @@ import numpy as np
 from colour import Color
 
 
-def renderPC(renderData, camNameList, semseg, legendList):
-    finalPos = renderData.PCpos
+# Render the pointcloud for a single framae
+def renderPC(renderFrame, selectedCameras, semseg, legendList):
+    finalPos = renderFrame.PCpos
     pointAmount = finalPos.shape[0]
 
+    # Get the  initial values
     finalSizes = np.ones(pointAmount) * 1
     finalColors = np.ones((pointAmount, 3))
 
-    mask = legendList[renderData.segmentVals]
+    # Get the mask according to the selected legend
+    mask = legendList[renderFrame.segmentVals]
 
-    if semseg:
-        finalColors = renderData.segmentColors / 255
+    if semseg:  # Use the segmenting color ans size
+        finalColors = renderFrame.segmentColors / 255
         finalSizes = finalSizes * 5
-    else:
-        for camName in camNameList:
-            indices = renderData.colIndices[camName]
-            colors = renderData.cols[camName]
+    else:  # Use the colors, with the selected cameras
+        for camName in selectedCameras:
+            indices = renderFrame.colIndices[camName]
+            colors = renderFrame.cols[camName]
             finalSizes[indices] = 4
             finalColors[indices] = colors
 
-    finalSizes = finalSizes[mask]
+    return finalPos[mask], finalColors[mask], finalSizes[mask]
 
-    return finalPos[mask], finalColors[mask], finalSizes
 
-def renderCarPath(renderData):
-    finalPos = renderData.carPositions + np.array([0, 0, 4])
+def renderCarPath(renderFrame):
+    # Heighten the path a bit for clarity
+    finalPos = renderFrame.carPositions + np.array([0, 0, 4])
 
-    red = Color("blue")   
+    # Get the gradient
+    blue = Color("blue")
     amount = finalPos.shape[0]
-    colors = list(red.range_to(Color("red"), amount))
-
+    colors = list(blue.range_to(Color("red"), amount))
     finalColors = np.asarray([color.rgb for color in colors])
 
-    currFrame = renderData.frameIndex
+    # Also add a black line for the car
+    currFrame = renderFrame.frameIndex
     currCarPos = finalPos[currFrame]
     carLine = np.vstack((currCarPos, currCarPos + np.array([0, 0, 2])))
     carColor = (0, 0, 0, 1)
@@ -44,14 +48,17 @@ def renderCarPath(renderData):
 
     return finalPos, finalColors, 10, carLine, carColor
 
-def renderPCList(renderDataList, camNameList, semseg, legendList):
-    dataList = [renderPC(renderData, camNameList, semseg, legendList) for renderData in renderDataList]
+
+def renderPCList(renderData, selectedCameras, semseg, legendList):
+    # Get the renders for each separate frame
+    dataList = [renderPC(renderFrame, selectedCameras, semseg, legendList)
+                for renderFrame in renderData]
 
     positions, colors, sizes = zip(*dataList)
 
+    # Join all the frames together
     concatPos = np.concatenate(tuple(positions))
     concatCol = np.concatenate(tuple(colors))
     concatSize = np.concatenate(tuple(sizes))
 
     return concatPos, concatCol, concatSize
-
