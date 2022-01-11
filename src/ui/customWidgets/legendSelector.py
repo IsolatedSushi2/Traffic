@@ -3,7 +3,7 @@ from src.ui.legendSelector import Ui_Form
 from src.constants import SEMSEG_COLORMAP
 import numpy as np
 
-
+# Handles the UI for the Legend Selector widget
 class LegendSelector(QtWidgets.QWidget):
     clickedLabelSignal = QtCore.pyqtSignal()
 
@@ -18,7 +18,7 @@ class LegendSelector(QtWidgets.QWidget):
         self.selectedClasses = np.ones(42, dtype=np.bool)
         self.setupLegend(renderData.classNames)
 
-
+    # Initial legend
     def setupLegend(self, classNames):
         print(classNames)
         for index, name in enumerate(classNames):
@@ -49,6 +49,7 @@ class LegendSelector(QtWidgets.QWidget):
 
         self.clickedLabelSignal.emit()
 
+    # Get the legend color
     def getWidgetColor(self, index):
         selectedIndex = self.selectedClasses[index]
         alphaChannel = self.alphaChannel[selectedIndex]
@@ -58,6 +59,7 @@ class LegendSelector(QtWidgets.QWidget):
 
         return frameColor, labelColor
 
+    #Create the UI for the rows
     def getRow(self, className, index):
         currRow = QtWidgets.QListWidgetItem()
         # Create widget
@@ -92,6 +94,3 @@ class LegendSelector(QtWidgets.QWidget):
         currRow.setSizeHint(widget.sizeHint())
 
         return currRow, widget
-        # Add widget to QListWidget funList
-
-        return

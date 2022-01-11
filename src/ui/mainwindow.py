@@ -1,12 +1,11 @@
 import os
 from pandaset import DataSet
 from src.constants import DEFAULT_DATA_SEQUENCE, CHOSEN_SEQUENCE
-from src.ui.vispyPlot2 import VispyPlot
+from src.ui.vispyPlot import VispyPlot
 from src.renderers.renderData import RenderData
 
+
 # Acts as the "mainwindow"
-
-
 class MainWindow:
     def __init__(self, ui):
         self.ui = ui
@@ -15,6 +14,7 @@ class MainWindow:
         self.useDefaultDataset()
         self.renderData = None
 
+    # The slider at the bottem
     def setupSlider(self):
         amount = len(self.renderData.renderFrameList)
         self.ui.frameSlider.setMaximum(amount - 1)
@@ -32,13 +32,14 @@ class MainWindow:
 
         self.generateRenderData(self.currSeq)
 
+        # Create the 3d plot
         camNames = self.currSeq.camera.keys()
         self.plot = VispyPlot(self.ui, camNames, self.renderData)
         self.setupSlider()
 
         self.render()
 
-    # Get the renderData (for now, just do the first frame)
+    # Get the renderData
     def generateRenderData(self, sequence):
         sequence.load()
         frameAmount = len(sequence.timestamps.data)

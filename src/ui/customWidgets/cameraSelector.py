@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from src.ui.camSelectui import Ui_Form
 
-
+# Handles the UI for the camera selector widget
 class CameraSelector(QtWidgets.QWidget):
     newCamListSignal = QtCore.pyqtSignal()
     renderPathSignal = QtCore.pyqtSignal()
