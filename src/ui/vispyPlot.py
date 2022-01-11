@@ -123,4 +123,3 @@ class VispyPlot:
             return
 
         self.renderPoints()
-        self.updateCamera()

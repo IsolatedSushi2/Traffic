@@ -1,14 +1,13 @@
 from pandaset import geometry
 import numpy as np
 
-
-#  TODO, handle the sampling
+# Return the Lidar pointcloud
 def getOriginalPC(sequence, frameIndex):
     PCdataFrame = sequence.lidar[frameIndex]
     PC = PCdataFrame.to_numpy()[:, :3]
     return PC
 
-
+# Get the indices and colors per camera per frame (for easy rendering)
 def getColorIndicesDict(pos, frameIndex, seq):
 
     colorDict = {}
@@ -26,6 +25,7 @@ def getColorIndicesDict(pos, frameIndex, seq):
     return colorDict, indiceDict
 
 
+# Project the camera colors onto the pointcloud, and store the indices
 def projectCamera(positions, currCam, frameIndex):
     projected_points2d, _, inner_indices = geometry.projection(lidar_points=positions,
                                                                camera_data=currCam[frameIndex],
@@ -33,10 +33,8 @@ def projectCamera(positions, currCam, frameIndex):
                                                                camera_intrinsics=currCam.intrinsics,
                                                                filter_outliers=True)
 
-    # TODO, could do rounding, but then 1919.5 becomes 1920, fix that
-    #pixelIndices = np.round(projected_points2d)
     pixelIndices = np.array(projected_points2d, dtype=np.uint16)
-    # Maybe that _npx works?
+
     rowIndices = pixelIndices[:, 0]
     columnIndices = pixelIndices[:, 1]
 

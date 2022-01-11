@@ -54,7 +54,6 @@ QPushButton:pressed {{
             currButton = getattr(self.ui, camName)
             currButton.clicked.connect(self.clickedCamButton)
             currSelected = self.selectedCams[camName]
-            print(currSelected)
             currButton.setStyleSheet(self.buttonColors[currSelected])
 
     @QtCore.pyqtSlot()

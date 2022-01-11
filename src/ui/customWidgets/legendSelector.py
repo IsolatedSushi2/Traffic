@@ -20,7 +20,6 @@ class LegendSelector(QtWidgets.QWidget):
 
     # Initial legend
     def setupLegend(self, classNames):
-        print(classNames)
         for index, name in enumerate(classNames):
             currRow, currWidget = self.getRow(name, index)
             self.ui.listWidget.addItem(currRow)

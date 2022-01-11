@@ -1,5 +1,6 @@
 import numpy as np
 
+# This file sets the default colors for the legends (To get nice corresponding colours)
 
 def getDefaultColors(colorDict):
     colorDict['Reflection'] = [0, 0, 0]
