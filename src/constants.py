@@ -4,7 +4,7 @@ import numpy as np
 from src.colors import getDefaultColors
 
 # Data paramaters
-DEFAULT_DATA_SEQUENCE = os.path.join(os.getcwd(), "data")
+DEFAULT_DATA_SEQUENCE = os.path.join(os.getcwd(), "testData")
 CHOSEN_SEQUENCE = "040"
 
 # Legend parameters
