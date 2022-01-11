@@ -5,7 +5,7 @@ from src.colors import getDefaultColors
 
 # Data paramaters
 DEFAULT_DATA_SEQUENCE = os.path.join(os.getcwd(), "data")
-CHOSEN_SEQUENCE = "032"
+CHOSEN_SEQUENCE = "040"
 
 # Legend parameters
 CLASS_NAMES = ['Smoke', 'Exhaust', 'Rain', 'Reflection', 'Vegetation', 'Ground', 'Road', 'Lane Line', 'Stop Line', 'Other Marking', 'Sidewalk', 'Driveway', 'Car', 'Pickup Truck', 'Medium Truck', 'Semi-truck', 'Towed Object', 'Motorcycle', 'Construction Vehicle', 'Other Vehicle', 'Pedicab',
