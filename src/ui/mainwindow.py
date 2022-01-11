@@ -1,6 +1,6 @@
 import os
 from pandaset import DataSet
-from src.constants import DEFAULT_DATA_SEQUENCE
+from src.constants import DEFAULT_DATA_SEQUENCE, CHOSEN_SEQUENCE
 from src.ui.vispyPlot2 import VispyPlot
 from src.renderers.renderData import RenderData
 
@@ -28,8 +28,7 @@ class MainWindow:
 
         # TODO user should be able to select the sequence
         print(self.dataSet.sequences(with_semseg=True))
-        firstSequence = self.dataSet.sequences(with_semseg=True)[0]
-        self.currSeq = self.dataSet[firstSequence]
+        self.currSeq = self.dataSet[CHOSEN_SEQUENCE]
 
         self.generateRenderData(self.currSeq)
 
@@ -45,10 +44,10 @@ class MainWindow:
         frameAmount = len(sequence.timestamps.data)
 
         self.renderData = RenderData(sequence, range(0, frameAmount, 5))
-        
-        
+
     def render(self):
 
         if not self.currSeq:
             return
+
         self.plot.update()

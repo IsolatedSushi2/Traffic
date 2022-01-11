@@ -1,7 +1,7 @@
 import src.extractors.pointCloudExtractor as PCE
 import src.extractors.positionExtractor as PE
-from src.constants import SEMSEG_COLORMAP
-
+from src.constants import SEMSEG_COLORMAP, CLASS_NAMES
+import numpy as np
 
 #  Stores all the renders for a single frame (from all the sensors)
 class RenderFrame:
@@ -19,9 +19,10 @@ class RenderFrame:
         self.segmentColors = SEMSEG_COLORMAP[self.segmentVals]
 
 
-
 class RenderData:
     def __init__(self, sequence, selectedRange):
         self.renderFrameList = [RenderFrame(
             sequence, ind) for ind in selectedRange]
+
+        self.classNames = CLASS_NAMES
 

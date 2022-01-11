@@ -14,7 +14,7 @@ class CameraSelector(QtWidgets.QWidget):
 
         self.camNames = camNames
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-        self.connectCamButtons()
+        
         self.renderPath = False
 
         defaultStylesheet = """
@@ -33,14 +33,16 @@ QPushButton:hover {{
 QPushButton:pressed {{	
 	background-color: rgb(85, 170, 255);
 }}"""
-        selectedColor = defaultStylesheet.format(color="rgba(181, 181, 181, 100);")
-        notSelectedColor = defaultStylesheet.format(color="rgba(181, 181, 181, 255);")
+        selectedColor = defaultStylesheet.format(color="rgba(181, 181, 181, 255);")
+        notSelectedColor = defaultStylesheet.format(color="rgba(181, 181, 181, 100);")
 
         self.buttonColors = {True: selectedColor,
                              False: notSelectedColor}
 
-        self.selectedCams = dict.fromkeys(camNames, False)
-        self.selCamList = []
+        self.selectedCams = dict.fromkeys(camNames, True)
+        self.updateCamList()
+
+        self.connectCamButtons()
 
     def switchRenderPath(self):
         self.renderPath = not self.renderPath
@@ -51,6 +53,9 @@ QPushButton:pressed {{
         for camName in self.camNames:
             currButton = getattr(self.ui, camName)
             currButton.clicked.connect(self.clickedCamButton)
+            currSelected = self.selectedCams[camName]
+            print(currSelected)
+            currButton.setStyleSheet(self.buttonColors[currSelected])
 
     @QtCore.pyqtSlot()
     def clickedCamButton(self):
@@ -60,12 +65,15 @@ QPushButton:pressed {{
         self.selectedCams[camName] = not currSelected
 
         # Color the button
-        self.sender().setStyleSheet(self.buttonColors[currSelected])
-
+        self.sender().setStyleSheet(self.buttonColors[not currSelected])
+        self.updateCamList()
         self.emitNewCamList()
 
     # Emit the camera names which are selected
     def emitNewCamList(self):
+        
+        self.newCamListSignal.emit()
+
+    def updateCamList(self):
         dictItems = self.selectedCams.items()
         self.selCamList = [camName for camName, sel in dictItems if sel]
-        self.newCamListSignal.emit()

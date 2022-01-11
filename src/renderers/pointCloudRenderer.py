@@ -9,19 +9,6 @@ import numpy as np
 
 class PointCloudRenderer(BaseRenderer):
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
     @staticmethod
     def getFrameRenders(sequence, slices, cameraList):
         # Pointcloud is stored in the lidar
@@ -38,18 +25,8 @@ class PointCloudRenderer(BaseRenderer):
             allCol = PointCloudRenderer.getAllColors(
                 sequence, PCs, selIndices, cameraList)
             summedCols = np.sum(allCol, axis=1)
-            print(summedCols)
             mask = (summedCols < 3 - 0.01)
-            print("mask",mask)
             allSizes[mask] = 5
-
-            print("sizes",allSizes)
-
-
-        
-
-        
-
 
         return allPos, allCol, allSizes
 

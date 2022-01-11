@@ -13,25 +13,153 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(120, 300)
+        Form.resize(170, 400)
         Form.setStyleSheet("QWidget{\n"
-"background-color: rgb(48, 51, 56);\n"
+"background-color:transparent;\n"
+"}\n"
+"QListWidget{\n"
+"background-color:transparent;\n"
+"}\n"
+"/* SCROLL BARS */\n"
+"QScrollBar:horizontal {\n"
+"    border: none;\n"
+"    background: rgb(52, 59, 72);\n"
+"    height: 14px;\n"
+"    margin: 0px 21px 0 21px;\n"
+"    border-radius: 0px;\n"
+"}\n"
+"QScrollBar::handle:horizontal {\n"
+"    background: rgb(85, 170, 255);\n"
+"    min-width: 25px;\n"
+"    border-radius: 7px\n"
+"}\n"
+"QScrollBar::add-line:horizontal {\n"
+"    border: none;\n"
+"    background: rgb(55, 63, 77);\n"
+"    width: 20px;\n"
+"    border-top-right-radius: 7px;\n"
+"    border-bottom-right-radius: 7px;\n"
+"    subcontrol-position: right;\n"
+"    subcontrol-origin: margin;\n"
+"}\n"
+"QScrollBar::sub-line:horizontal {\n"
+"    border: none;\n"
+"    background: rgb(55, 63, 77);\n"
+"    width: 20px;\n"
+"    border-top-left-radius: 7px;\n"
+"    border-bottom-left-radius: 7px;\n"
+"    subcontrol-position: left;\n"
+"    subcontrol-origin: margin;\n"
+"}\n"
+"QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal\n"
+"{\n"
+"     background: none;\n"
+"}\n"
+"QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal\n"
+"{\n"
+"     background: none;\n"
+"}\n"
+" QScrollBar:vertical {\n"
+"    border: none;\n"
+"    background: rgb(52, 59, 72);\n"
+"    width: 14px;\n"
+"    margin: 21px 0 21px 0;\n"
+"    border-radius: 0px;\n"
+" }\n"
+" QScrollBar::handle:vertical {    \n"
+"    background: rgb(85, 170, 255);\n"
+"    min-height: 25px;\n"
+"    border-radius: 7px\n"
+" }\n"
+" QScrollBar::add-line:vertical {\n"
+"     border: none;\n"
+"    background: rgb(55, 63, 77);\n"
+"     height: 20px;\n"
+"    border-bottom-left-radius: 7px;\n"
+"    border-bottom-right-radius: 7px;\n"
+"     subcontrol-position: bottom;\n"
+"     subcontrol-origin: margin;\n"
+" }\n"
+" QScrollBar::sub-line:vertical {\n"
+"    border: none;\n"
+"    background: rgb(55, 63, 77);\n"
+"     height: 20px;\n"
+"    border-top-left-radius: 7px;\n"
+"    border-top-right-radius: 7px;\n"
+"     subcontrol-position: top;\n"
+"     subcontrol-origin: margin;\n"
+" }\n"
+" QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
+"     background: none;\n"
+" }\n"
+"\n"
+" QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
+"     background: none;\n"
+" }\n"
+"\n"
+"QLabel{\n"
+"background-color:transparent;\n"
+"color:rgba(255,255,255,150);\n"
 "}\n"
 "\n"
-"QListWidget{\n"
-"background-color: rgb(48, 51, 56);\n"
-"}")
+"/* CHECKBOX */\n"
+"QCheckBox::indicator {\n"
+"    border: 3px solid rgb(52, 59, 72);\n"
+"    width: 15px;\n"
+"    height: 15px;\n"
+"    border-radius: 10px;\n"
+"    background: rgb(44, 49, 60);\n"
+"}\n"
+"QCheckBox::indicator:hover {\n"
+"    border: 3px solid rgb(58, 66, 81);\n"
+"}\n"
+"QCheckBox::indicator:checked {\n"
+"    background: 3px solid rgb(52, 59, 72);\n"
+"    border: 3px solid rgb(52, 59, 72);    \n"
+"    \n"
+"    background-image: url(:/icons/16x16/cil-check-alt.png);\n"
+"}\n"
+"")
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setSpacing(5)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.frame = QtWidgets.QFrame(Form)
+        self.frame.setMinimumSize(QtCore.QSize(0, 30))
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem)
+        self.segmentingCheckBox = QtWidgets.QCheckBox(self.frame)
+        self.segmentingCheckBox.setMinimumSize(QtCore.QSize(0, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setWeight(75)
+        self.segmentingCheckBox.setFont(font)
+        self.segmentingCheckBox.setStyleSheet("color:rgba(255,255,255,150);")
+        self.segmentingCheckBox.setChecked(True)
+        self.segmentingCheckBox.setObjectName("segmentingCheckBox")
+        self.horizontalLayout.addWidget(self.segmentingCheckBox)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
+        self.verticalLayout.addWidget(self.frame)
         self.listWidget = QtWidgets.QListWidget(Form)
+        self.listWidget.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.listWidget.setStyleSheet("")
         self.listWidget.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.listWidget.setDragEnabled(True)
+        self.listWidget.setDragDropMode(QtWidgets.QAbstractItemView.NoDragDrop)
+        self.listWidget.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.listWidget.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.listWidget.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
         self.listWidget.setObjectName("listWidget")
-        item = QtWidgets.QListWidgetItem()
-        self.listWidget.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        self.listWidget.addItem(item)
         self.verticalLayout.addWidget(self.listWidget)
 
         self.retranslateUi(Form)
@@ -40,13 +168,8 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        __sortingEnabled = self.listWidget.isSortingEnabled()
-        self.listWidget.setSortingEnabled(False)
-        item = self.listWidget.item(0)
-        item.setText(_translate("Form", "Cars"))
-        item = self.listWidget.item(1)
-        item.setText(_translate("Form", "Pedestrians"))
-        self.listWidget.setSortingEnabled(__sortingEnabled)
+        self.segmentingCheckBox.setText(_translate("Form", "Segmenting"))
+import qtresources_rc
 
 
 if __name__ == "__main__":

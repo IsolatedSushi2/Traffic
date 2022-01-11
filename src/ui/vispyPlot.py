@@ -13,6 +13,8 @@ class VispyPlot:
 
         self.renderPoints()
 
+        
+
     # Create the 3d vispy widget
 
     def setupVispyWidget(self):
