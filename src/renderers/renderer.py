@@ -8,7 +8,7 @@ def renderPC(renderFrame, selectedCameras, semseg, legendList):
     pointAmount = finalPos.shape[0]
 
     # Get the  initial values
-    finalSizes = np.ones(pointAmount) * 1
+    finalSizes = np.ones(pointAmount) * 2
     finalColors = np.ones((pointAmount, 3))
 
     # Get the mask according to the selected legend
